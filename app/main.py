@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 from app.database import Base, engine
 from app import models
-from app.routers import children
+from app.routers import children, health_records
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -79,3 +79,4 @@ def table_test():
     }
 
 app.include_router(children.router)
+app.include_router(health_records.router)
