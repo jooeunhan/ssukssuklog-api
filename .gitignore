@@ -1,0 +1,10 @@
+# 라이브러리 루트
+.venv/
+__pycache__/
+*.py[cod]
+.idea/
+.env
+
+# 데이터베이스
+*.db
+*.sqlite3
