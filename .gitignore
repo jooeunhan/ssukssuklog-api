@@ -8,3 +8,6 @@ __pycache__/
 # 데이터베이스
 *.db
 *.sqlite3
+
+# 로컬 데이터
+/data/demo_child.json

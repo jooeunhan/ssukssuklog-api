@@ -1,15 +1,36 @@
+import json
+from pathlib import Path
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from sqlalchemy import text
+from sqlalchemy.orm import Session
 
 from app.database import Base, engine
 from app import models
+from app.routers import children
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # 서버 시작 시 정의된 테이블 생성
     Base.metadata.create_all(bind=engine)
+
+    data_path = (
+        Path(__file__).resolve().parent.parent
+        / "data"
+        / "demo_child.json"
+    )
+
+    if data_path.exists():
+        with data_path.open("r", encoding="utf-8") as file:
+            child_data = json.load(file)
+
+        with Session(engine) as db:
+            child = db.get(models.Child, child_data["id"])
+
+            if child is None:
+                db.add(models.Child(**child_data))
+                db.commit()
 
     yield
 
@@ -56,3 +77,5 @@ def table_test():
         "table": table_name,
         "status": "created" if table_name else "not found"
     }
+
+app.include_router(children.router)
