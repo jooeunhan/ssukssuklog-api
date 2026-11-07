@@ -11,3 +11,4 @@ __pycache__/
 
 # 로컬 데이터
 /data/demo_child.json
+/data/health_records_seed.json
