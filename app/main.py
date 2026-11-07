@@ -11,6 +11,8 @@ from app.database import Base, engine
 from app import models
 from app.routers import children, health_records, dashboard
 
+from fastapi.middleware.cors import CORSMiddleware
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
@@ -39,6 +41,14 @@ app = FastAPI(
     description="아동 개인 맞춤형 건강 관찰 서비스",
     version="1.0.0",
     lifespan=lifespan
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ]
 )
 
 # System
